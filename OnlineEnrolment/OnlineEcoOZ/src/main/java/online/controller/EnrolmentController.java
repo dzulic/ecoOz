@@ -314,11 +314,31 @@ public class EnrolmentController {
 
     }
 
+    @RequestMapping("/deleteRowZahtev")
+    public String deleteRowZahtev(String s) {
+
+        if (zahtev.getListaStavki() != null && s!=null) {
+            zahtev.getListaStavki().remove(Integer.parseInt(s));
+        }
+        modelAndView.addObject("zahtev", zahtev);
+        return "redirect:/";
+
+    }
+
+    @RequestMapping("/deleteRowIzvestaj")
+    public String deleteRowIzvestaj(String s) {
+        if (izvestaj.getListaStavki() != null && s!=null) {
+            izvestaj.getListaStavki().remove(Integer.parseInt(s));
+        }
+        modelAndView.addObject("izvestaj", izvestaj);
+        return "redirect:/";
+
+    }
+
     @RequestMapping("create/backKreirajNalog")
     public String redirectBack() {
         return "redirect:keirajNalog";
     }
-
 
     @RequestMapping(value = "/logout")
     public String processLogout() {

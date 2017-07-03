@@ -95,6 +95,13 @@
                     </form>
                 </div>
             </div>
+            <br/>
+            <div class="row" th:if="${pomocneStavkeIzv !=null}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <h2> <label th:text="#{selected-report}"/></h2>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-2">
@@ -107,6 +114,7 @@
                                         <th th:text="#{redniBroj}"/>
                                         <th th:text="#{datumIzvestaja}"/>
                                         <th th:text="#{kolicina}"/>
+                                        <th></th>
                                         <th th:text="#{materijal}"/>
                                         <th th:text="#{sluzba}"/>
                                         <th th:text="#{korisnik}"/>
@@ -123,6 +131,7 @@
                                         <td th:text="${pomocneStavkeIzv[__${static.index}__].redniBroj}" id="redniBr"></td>
                                         <td th:text="${{pomocneStavkeIzv[__${static.index}__].izvestaj.datum}}"></td>
                                         <td th:text="${pomocneStavkeIzv[__${static.index}__].kolicina}"></td>
+                                        <td th:text="kg" id="redniBr"/>  
                                         <td th:text="${pomocneStavkeIzv[__${static.index}__].materijal}"></td>
                                         <td th:text="${pomocneStavkeIzv[__${static.index}__].izvestaj.sluzba.naziv}"></td>
                                         <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.user}"></td>

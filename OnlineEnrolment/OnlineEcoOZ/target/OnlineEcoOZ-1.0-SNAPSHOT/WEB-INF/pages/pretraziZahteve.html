@@ -107,18 +107,33 @@
                             url: "so/prikaziZaduzenje",
                             data: id
                         }
-                        );
-                        document.location.reload();
-
-                        window.location.reload();
-
-                        $.ajax({
-                            url: "redirect"
+                        ).done(function () {
+                            window.location.reload(true);
                         });
 
-                        document.location.reload();
 
-                        window.location.reload();
+                    }
+                    function updateRow(rb) {
+                        $.ajax({
+                            type: "POST",
+                            url: "edit/zahtev/update",
+                            data: rb
+                        }
+                        ).done(function () {
+                            window.location.reload(true);
+                        });
+
+                    }
+                    function deleteRow(rb) {
+                        $.ajax({
+                            type: "POST",
+                            url: "edit/zahtev/update",
+                            data: rb
+                        }
+                        ).done(function () {
+                            window.location.reload(true);
+                        });
+
                     }
                 </script>
                 <div class="row">
@@ -133,6 +148,7 @@
                                             <th th:text="#{zahtevID}"/>
                                             <th th:text="#{redniBroj}"/>
                                             <th th:text="#{kolicina}"/>
+                                            <th></th>
                                             <th th:text="#{materijal}"/>
                                         </tr>
                                     </thead>
@@ -142,6 +158,7 @@
                                                 <th th:field="*{zahtevID}" th:text="*{zahtevID}" />  
                                                 <th th:field="*{listaStavki[__${static.index}__].redniBroj}" th:text="${pomocniZahtev.listaStavki[__${static.index}__].redniBroj}" ></th> 
                                                 <th><input th:field="*{listaStavki[__${static.index}__].kolicina}" th:value="${pomocniZahtev.listaStavki[__${static.index}__].kolicina}"/></th> 
+                                                <th th:text="kg" id="redniBr"/>  
                                                 <th>                                            
                                                     <select th:field="*{listaStavki[__${static.index}__].materijal}">
                                                         <option th:each="materijal : ${materijali}" 
@@ -150,17 +167,21 @@
                                                         </option> 
                                                     </select>
                                                 </th>
+                                                <div class="row" th:if="${pomocniZahtev !=null}">
+                                                    <th>
+                                                        <button class="inline-buttons" type="button"  th:onclick="'javascript:updateRow(\'' + ${static.index}  + '\');'" th:text="#{update}"/>
+                                                        <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + ${static.index}  + '\');'" th:text="#{delete}"/>
+                                                    </th>
+                                                </div>  
                                             </tr>
+
                                         </th:block>
-
                                     </tbody>
-
                                 </table>
                             </div>
                             <div class="row" th:if="${pomocniZahtev !=null}">
-                                <button class="has-margin" type="submit"  name="action" value="delete" th:text="#{delete}"/>
-                                <button class="has-margin"  type="submit" name="action" value="update" th:text="#{update}"/>
-                            </div>   
+                                <button class="has-margin" type="submit"  name="action" value="delete" th:text="#{delete-all}"/>
+                            </div>  
                         </form>
                     </div>
                 </div>

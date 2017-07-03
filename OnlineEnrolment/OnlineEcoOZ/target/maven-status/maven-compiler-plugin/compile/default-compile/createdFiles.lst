@@ -12,6 +12,5 @@ online\controller\PretraziZahteveController.class
 online\service\ApplicationService.class
 online\config\Launcher.class
 online\controller\IzmeneController.class
-online\controller\Kreira?Controller.class
 online\config\IntFormatter.class
 online\controller\PretraziIzvestajeController.class

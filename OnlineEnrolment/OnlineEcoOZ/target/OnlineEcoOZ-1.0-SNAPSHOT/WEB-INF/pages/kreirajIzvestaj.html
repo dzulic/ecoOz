@@ -41,7 +41,24 @@
                         </h2>
                     </div>
                 </div>
+                <script type="text/javascript"
+                        src="http://code.jquery.com/jquery-1.10.1.min.js">
+                </script>
+                <script type="text/javascript">
 
+                    function deleteRow(rb) {
+                        var s = rb + "";
+                        $.ajax({
+                            type: "POST",
+                            url: "deleteRowIzvestaj",
+                            data: {'s': s}
+
+                        }
+                        ).done(function () {
+                            window.location.reload(true);
+                        });
+                    }
+                </script>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-10" th:if="${izvestaj.ID!=0}">
@@ -54,6 +71,7 @@
                                             <th th:text="#{datumIzvestaj}"/>
                                             <th th:text="#{datumZahteva}"/>
                                             <th th:text="#{kolicina}"/>
+                                            <th></th>
                                             <th th:text="#{materijal}"/>
                                             <th th:text="#{korisnik}"/>
                                         </tr>
@@ -72,6 +90,7 @@
                                             <td>
                                                 <input th:field="*{listaStavki[__${stat.index}__].kolicina}" type="text" required="required"/>
                                             </td>
+                                            <td th:text="kg" id="redniBr"/>  
                                             <td>
                                                 <select th:field="*{listaStavki[__${stat.index}__].materijal}" required="required">
                                                     <option th:each="materijal : ${materijali}" 
@@ -81,6 +100,9 @@
                                             </td>
                                             <td>
                                                 <input th:field="*{listaStavki[__${stat.index}__].korisnik.user}" type="text" required="required"/>
+                                            </td>
+                                            <td>
+                                                <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + ${stat.index}  + '\');'" th:text="#{delete}"/>
                                             </td>
                                         </tr>
                                     </tbody>

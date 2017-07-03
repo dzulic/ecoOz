@@ -40,6 +40,24 @@
                     </h2>
                 </div>
             </div>
+            <script type="text/javascript"
+                    src="http://code.jquery.com/jquery-1.10.1.min.js">
+            </script>
+            <script type="text/javascript">
+
+                function deleteRow(rb) {
+                    var s = rb + "";
+                    $.ajax({
+                        type: "POST",
+                        url: "deleteRowZahtev",
+                        data: {'s': s}
+
+                    }
+                    ).done(function () {
+                        window.location.reload(true);
+                    });
+                }
+            </script>
             <div class="row"  th:if="${zahtev.zahtevID!=0}">
                 <div class="col-md-2"></div>
                 <div class="col-md-10" th:if="${noviZahtev==null}">
@@ -50,6 +68,7 @@
                                     <tr>
                                         <th th:text="#{redniBroj}"/>
                                         <th th:text="#{kolicina}"/>
+                                        <th></th>
                                         <th th:text="#{materijal}"/>
                                     </tr>
                                 </thead>
@@ -60,14 +79,18 @@
                                         </td>
 
                                         <td>
-                                            <input th:value="*{listaStavki[__${stat.index}__].kolicina}" th:field="*{listaStavki[__${stat.index}__].kolicina}" type="text" required="required"/>
+                                            <input th:value="*{listaStavki[__${stat.index}__].kolicina}" th:field="*{listaStavki[__${stat.index}__].kolicina}" type="number" step=".1" required="required"/>
                                         </td>
+                                        <td th:text="kg" id="redniBr"/>  
                                         <td>
                                             <select th:value="*{listaStavki[__${stat.index}__].materijal}" th:field="*{listaStavki[__${stat.index}__].materijal}" required="required">
                                                 <option th:each="materijal : ${materijali}" 
                                                         th:value="${materijal}" 
                                                         th:text="#{${'materijali.materijal.' + materijal}}"></option> 
                                             </select>
+                                        </td>
+                                        <td>               
+                                            <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + ${stat.index}  + '\');'" th:text="#{delete}"/>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -82,7 +105,7 @@
                     </form>
                 </div>
             </div>
-            
+
             <div class="row" th:if="${noviZahtev!=null}">
                 <div class="col-md-2"></div>
                 <div class="col-md-10">
@@ -107,6 +130,7 @@
                                         <th th:text="#{date}"/>
                                         <th th:text="#{redniBroj}"/>
                                         <th th:text="#{kolicina}"/>
+                                        <th></th>
                                         <th th:text="#{materijal}"/>
                                         <th th:text="#{user}"/>
                                         <th th:text="#{givenName}"/>
@@ -125,6 +149,7 @@
                                             <th th:text="${{noviZahtev.datum}}" />  
                                             <th th:text="${noviZahtev.listaStavki[__${static.index}__].redniBroj}" ></th> 
                                             <th th:text="${noviZahtev.listaStavki[__${static.index}__].kolicina}"></th> 
+                                            <th th:text="kg" id="redniBr"/>  
                                             <th th:text="${noviZahtev.listaStavki[__${static.index}__].materijal}"></th>  
                                             <th th:text="${noviZahtev.korisnik.user}"></th>                                        
                                             <th th:text="${noviZahtev.korisnik.ime}"></th>                                        

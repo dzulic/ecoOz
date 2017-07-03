@@ -175,6 +175,16 @@ a:hover {
     color:rgb(21, 44, 66);
 
 }
+
+.inline-buttons{
+    margin: 0;
+    display: inline;
+    float: left;
+    width: 80px;
+    border: none;
+    box-shadow: none;
+    color:green;
+}
 .container {
     padding-left: 30px;
     max-height: 2000px;
