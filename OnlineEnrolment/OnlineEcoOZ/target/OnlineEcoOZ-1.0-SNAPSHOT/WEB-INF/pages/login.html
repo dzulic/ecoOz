@@ -1,0 +1,89 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    </head>
+    <body>
+        <div class="layer" id="login"></div>
+        <div class="container-fluid">
+            <h1> <label th:text="#{please-loggin}" class="zahtevTitle"/></h1>
+            <hr>
+                <div class="col-md-4"></div>
+                <div class="col-md-2">
+                    <form action="login/korisnik" th:object="${korisnik}" method="get" class="user-login">
+                        <table>        
+                            <thead>
+                                <tr>
+                                    <th th:text="#{korisnik}" id="podnaslov"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td> 
+                                        <label th:text="#{user}"/>
+                                    </td>
+                                </tr>
+                                <tr> 
+                                    <td> 
+                                        <input type="text" name="user" required="required" th:value="*{user}"/> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> 
+                                        <label th:text="#{pass}"/>
+                                    </td> 
+                                </tr>
+                                <tr>                                
+                                    <td> 
+                                        <input type="password" required="required" name="pass" th:value="*{pass}" /> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button type="submit" th:text="#{login}" id="btnLoginUser"></button>
+                    </form>
+                </div>
+
+                <div class="col-md-2">
+                    <form action="login/sluzba" method="get" th:object="${sluzba}" class="sluzba-login">
+                        <table> 
+                            <thead>
+                                <tr>
+                                    <th th:text="#{sluzba}" id="podnaslov"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr> 
+                                    <td>  
+                                        <label th:text="#{user}"/>
+
+                                    </td>
+                                </tr>
+                                <tr> 
+                                    <td>      
+                                        <input type="text" name="PIB" th:value="*{{PIB}}" th:field="*{{PIB}}" pattern="[0-9]+"/> 
+                                    </td>
+                                </tr>
+                                <tr> 
+                                    <td>   
+                                        <label th:text="#{pass}"/>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>                            
+                                        <input type="password" name="sifra" th:field="*{sifra}" pattern="[a-z,A-Z,0-9]+"/> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button name="confirm" th:text="#{login}" id="btnLoginSluzba"></button>
+                    </form>
+                    <div class="col-md-4"></div>
+                </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    </head>
+    <body>
+        <div th:fragment="zaduzenje" class="createForm">
+            <h1> <label th:text="#{search-duty-criteria-title}"/></h1>
+            <hr/>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form action="get/zaduzenja/selected" th:object="${zaduzenje}">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th th:text="#{datumZaduzenja}"/>
+                                    <th th:text="#{datumZahtev}"/>
+                                    <th th:text="#{korisnik}"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="date" th:field="*{{datum}}"/></td>
+                                    <td><input type="date" th:field="*{{zahtev.datum}}"/></td>
+                                    <td><input type="text" th:field="*{zahtev.korisnik.user}"/></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <button class="has-margin" type="submit" th:text="#{search}"/>
+                    </form>
+                </div>
+            </div>
+            <script type="text/javascript"
+                    src="http://code.jquery.com/jquery-1.10.1.min.js">
+            </script>
+            <script type="text/javascript">
+                function  prikaziZaduzenje(id) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "prikazi/zaduzenje",
+                        data: id
+                    }
+
+                    ).done(function () {
+                        window.location.reload(true);
+                    });
+                   
+
+                }
+            </script>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <h2> <label th:text="#{search-duty-title}"/></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form action="get/zaduzenja/all"  method="post">                
+                        <div class="applicants-details-form">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th th:text="#{zaduzenjaID}"/>
+                                        <th th:text="#{sluzbaNaziv}"/>
+                                        <th th:text="#{datumZaduzenja}"/>
+                                        <th th:text="#{datumZahtev}"/>
+                                        <th th:text="#{korisnik}"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <th:block th:if="${not #lists.isEmpty(listaZaduzenja)}">
+                                        <tr id="click" th:each="z, in : ${listaZaduzenja}"  style="cursor: pointer" 
+                                            th:onclick="'javascript:prikaziZaduzenje(\'' + ${listaZaduzenja[__${in.index}__].zaduzenjaID} + '\');'" >
+                                            <td th:text="${listaZaduzenja[__${in.index}__].zahtev.zahtevID}" id="redniBr"/>
+                                            <td th:text="${listaZaduzenja[__${in.index}__].sluzba.naziv}" />
+                                            <td th:text="${{listaZaduzenja[__${in.index}__].datum}}"/>
+                                            <td th:text="${{listaZaduzenja[__${in.index}__].zahtev.datum}}"/>
+                                            <td th:text="${listaZaduzenja[__${in.index}__].zahtev.korisnik.user}"/>
+                                        </tr>
+
+                                    </th:block>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <button class="has-margin" type="submit" th:text="#{refresh}"/>
+                    </form>
+                </div>
+            </div>
+            <div class="row" th:if="${zaduzenjeSve !=null}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <h2> <label th:text="#{selected-duty}"/></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form action=""  th:object="${zaduzenjeSve}" method="post">                
+                        <div class="applicants-details-form" th:if="${zaduzenjeSve !=null}">
+                            <table>
+                                <thead>
+                                    <tr> 
+                                        <th th:text="#{zaduzenjaID}"/>
+                                        <th th:text="#{zahtevID}"/>
+                                        <th th:text="#{sluzbaNaziv}"/>
+                                        <th th:text="#{datumZaduzenja}"/>
+                                        <th th:text="#{datumZahtev}"/>
+                                        <th th:text="#{korisnik}"/>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td th:text="${zaduzenjeSve.zaduzenjaID}" th:if="${zaduzenjeSve.zahtev!=null}"/>
+                                        <td th:text="(${zaduzenjeSve.zahtev.zahtevID})" id="redniBr" th:if="${zaduzenjeSve.zahtev!=null}"/>
+                                        <td th:text="${sluzba.naziv}" th:if="${zaduzenjeSve.zahtev!=null}"/>
+                                        <td th:text="${{zaduzenjeSve.datum}}" th:if="${zaduzenjeSve.zahtev!=null}"/>
+                                        <td th:text="(${{zaduzenjeSve.zahtev.datum}})" th:if="${zaduzenjeSve.zahtev!=null}"/>
+                                        <td th:text="(${{zaduzenjeSve.zahtev.korisnik.user}})" th:if="${zaduzenjeSve.zahtev!=null}"/>
+
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

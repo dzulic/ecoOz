@@ -1,0 +1,144 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <link rel="stylesheet" href="../../css/style.css" type="text/css"/>
+
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+    </head>
+    <body>
+        <div th:fragment="izvestaj" class="createForm">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-10">
+                    <h1> <label th:text="#{search-report-criteria-title}" class="izvestajTitle"/></h1>
+                    <hr/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form action="get/izvestaj/selected" th:object="${izvestaj}">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th th:text="#{datumIzvestaja}"/>
+                                    <th th:text="#{korisnik}"/>
+                                    <th th:text="#{materijal}"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input  type="date" placeholder="dd-MM-yyyy" th:field="*{{datum}}" /></td>
+                                    <td><input type="text" th:field="*{listaStavki[0].korisnik.user}"/></td>
+                                    <td>  <select th:field="*{listaStavki[0].materijal}">
+                                            <option th:each="materijal : ${materijali}" 
+                                                    th:value="${materijal}" 
+                                                    th:text="#{${'materijali.materijal.' + materijal}}"></option> 
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <button class="has-margin" type="submit" th:text="#{search}" th:name="search"/>
+                    </form>
+                </div> 
+            </div>
+            <script type="text/javascript"
+                    src="http://code.jquery.com/jquery-1.10.1.min.js">
+            </script>
+            <script type="text/javascript">
+                function prikaziIzvestaj(id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "prikazi/izvestaj",
+                        data: id
+                    }
+                    ).done(function () {
+                        window.location.reload(true);
+                    });
+
+                }
+            </script>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <h2> <label th:text="#{search-report-title}"/></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form method="post">
+                        <div class="applicants-details-form">
+                            <table>
+                                <thead>
+                                    <tr> 
+                                        <th th:text="#{izvestajID}"/>
+                                        <th th:text="#{datumIzvestaja}"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="click" th:each="stavka, stat : ${listaStavkeIzvestaja}"
+                                        style="cursor: pointer" 
+                                        th:onclick="'javascript:prikaziIzvestaj(\'' + ${listaStavkeIzvestaja[__${stat.index}__].id} + '\');'" >
+                                        <td th:text="${listaStavkeIzvestaja[__${stat.index}__].id}"></td>
+                                        <td th:text="${{listaStavkeIzvestaja[__${stat.index}__].datum}}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-2">
+                    <form action="so/prikaziIzvestaj" >
+                        <div class="applicants-details-form" th:if="${pomocneStavkeIzv != null}">
+                            <table>
+                                <thead>
+                                    <tr> 
+                                        <th th:text="#{izvestajID}"/>
+                                        <th th:text="#{redniBroj}"/>
+                                        <th th:text="#{datumIzvestaja}"/>
+                                        <th th:text="#{kolicina}"/>
+                                        <th th:text="#{materijal}"/>
+                                        <th th:text="#{sluzba}"/>
+                                        <th th:text="#{korisnik}"/>
+                                        <th th:text="#{givenName}"/>
+                                        <th th:text="#{surname}"/>
+                                        <th th:text="#{street}"/>
+                                        <th th:text="#{houseNumber}"/>
+                                        <th th:text="#{city}"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="st, static : ${pomocneStavkeIzv}">
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].izvestaj.ID}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].redniBroj}" id="redniBr"></td>
+                                        <td th:text="${{pomocneStavkeIzv[__${static.index}__].izvestaj.datum}}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].kolicina}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].materijal}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].izvestaj.sluzba.naziv}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.user}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.ime}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.prezime}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.ulica}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.brKuce}"></td>
+                                        <td th:text="${pomocneStavkeIzv[__${static.index}__].korisnik.grad}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

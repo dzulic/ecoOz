@@ -1,0 +1,72 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Eco Oz</title>
+        <meta charset="UTF-8" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link th:href="@{css/style.css}" rel="stylesheet" type="text/css" href="/css/style.css" /> 
+    </head>
+    <body>
+        <div style="margin: -10px 0 0 -10px;  background: transparent">
+            <div th:replace="templates/parts::header"></div>
+        </div>
+        <div class="layer" id="login"></div>
+        <div class="container-fluid" >
+            <h1 id="noMarginh1"><label th:text="#{fill-create-user}"/></h1>
+            <hr/>
+                <form action="novi/korisnik" th:object="${noviKorisnik}" method="post" class="centered" id="shown">
+                    <table>
+                        <tbody>
+                            <tr>  
+                                <td>
+                                    <label th:text="#{givenName}"></label>
+                                </td>
+                                <td> <input type="text" th:field="*{ime}" required="required" pattern="[a-z,A-Z,0-9]+"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{surname}"></label></td>
+                                <td><input type="text" th:field="*{prezime}" required="required" pattern="[a-z,A-Z,0-9]*"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{user}"></label></td>
+                                <td><input type="text" th:field="*{user}" required="required"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{pass}"></label></td>
+                                <td><input type="password" th:field="*{pass}" required="required"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{email}"></label> </td>
+                                <td><input type="email" th:field="*{email}" required="required"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{nin}"></label> </td>
+                                <td><input type="text" required="required" pattern="[0-9]{13}" th:value="*{{brLicne}}" th:field="*{{brLicne}}"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{city}"></label> </td>
+                                <td><input type="text" th:field="*{grad}" required="required"/></td>
+                            </tr><tr>
+                                <td><label th:text="#{street}"></label> </td>
+                                <td><input type="text" th:field="*{ulica}" required="required" /></td>
+                            </tr><tr>
+                                <td><label th:text="#{houseNumber}"></label> </td>
+                                <td><input type="text" th:field="*{brKuce}" required="required"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" th:text="#{submit}"></button>
+                </form>
+                <div id="msg"  th:include="__${message}__"/></div>
+        <div th:replace="templates/parts::footer"/>
+        <script type="text/javascript"
+                src="http://code.jquery.com/jquery-1.10.1.min.js">
+        </script>
+        <script th:inline="javascript">
+            var m;
+            /*<![CDATA[*/
+            m = [[${message}]];
+            if (m !== "") {
+                alert(m);
+            }
+            /*]]>*/
+        </script>
+    </body>
+</html>

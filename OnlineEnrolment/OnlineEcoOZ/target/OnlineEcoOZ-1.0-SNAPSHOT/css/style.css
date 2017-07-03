@@ -1,0 +1,389 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+header{
+    background-size: cover;
+    width: 100%;
+    height: 90px;
+    padding: 20px 17px 0px 1px;
+    color:rgb(21, 44, 66);
+}
+
+body{
+    background-image: url("../images/green.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'Abel';
+    background-position: center;
+    font-size: 18px;
+    color:green;
+
+
+}
+.ui-dialog-titlebar {
+    background:greenyellow;
+    font-size: 30px;
+    text-align:center;
+
+}
+.ui-button{
+    font-size: 20px;
+    padding:2px;
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 0px;
+    height: 40px;
+    width: 100px;
+    background: transparent;
+    border-radius: 0px;
+    border:0px;
+    box-shadow: 0;
+    color:black;
+}
+
+#alertDialog{
+    background: white; height: 150px  !important; display: none;
+}
+#alertDialog p{
+    padding:30px;
+}
+.layer{
+    margin-top: -200px;
+    opacity: 0.6;
+    background-color: white;
+    position: fixed;
+    width: 1500px;
+    margin-left: 23.6%;
+    height: 1200px;
+    max-height: 1400px;
+    overflow: hidden;
+    z-index: -1;
+
+}
+
+footer{
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    width:100%;
+    height:40px;
+    background:greenyellow;
+    padding: 0 50px 20px 0px;
+    text-align: center;
+    color: black;
+}
+
+#copyright{
+    margin-top: 20px;
+    font-size: 13px;
+}
+
+.navbar-main{
+    position: fixed;
+    float: left;
+    width: 24%;
+    height: 100%;
+    margin-top: 200px;
+    margin-left:-7px;
+
+}
+
+.navbar-main ul {
+    list-style-type: none;
+    margin: 0;
+    padding:0 7%;
+
+}
+
+ul {
+    list-style-type: none;
+}
+
+.navbar-main li a {
+    display: block;
+    width: 60px;
+    opacity: 1.8;
+}
+
+.navbar-main ul li a{
+    border:solid;
+    padding: 18px;
+    width: 280px;
+    margin: 10px;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    font-size: 20px;
+}
+
+li ul {
+    position: absolute;
+    display: none;
+    padding-left: 0;
+}
+
+.navbar-header ul li ul li a {
+    display:block;
+    color: white;
+    border: none;
+}
+
+.navbar-header ul li:hover > ul ul 
+{
+    display:block;
+    width: 10px;
+
+}
+
+.navbar-header li:hover ul {
+    display: block;
+}
+
+
+a:hover {
+    color: greenyellow;
+}
+
+@media screen and (min-width: 650px) {
+    .nav li {
+        width: 130px;
+        border-bottom: none;
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.4em;
+        display: inline-block;
+        margin-right: -4px;
+    }
+}
+
+.logo{
+    background-image: url("../images/ecooz-02.png");
+    z-index: 3;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: -30px;
+    margin-left: 50px;
+}
+.containerWhite{
+    margin: 150px 0 0 30%;
+    max-height: 800px;
+    width: 1300px;
+    overflow-y: scroll;
+    height: 1000px;
+    color:rgb(21, 44, 66);
+
+}
+.container {
+    padding-left: 30px;
+    max-height: 2000px;
+    min-height: 1000px;
+}
+.navbar-header{
+    float: right;
+    margin-right:80px;
+
+}
+
+.navbar-header ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.navbar-header ul li a{
+    text-decoration: none;
+    color: white;
+
+}
+
+.profile{
+    color:#337ab7;
+}
+.createForm{
+    overflow-y: scroll;
+    max-height: 50%;
+}
+
+input{
+    font-size: 19px;
+    margin-top: 6px;
+
+}
+td {
+    text-align: center;
+}
+label{
+    padding-bottom:9px;
+
+}
+
+#input.applicants-details-form{
+    font-size: 18px;
+
+}
+
+#label.applicants-details-form{
+    float:left;
+    padding-right:20px;
+    font-size: 21px;    
+}
+
+.applicants-details-form{
+
+}
+.none{
+    margin-top: -50px;
+}
+button{
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 190px;
+    height: 40px;
+    width: 120px;
+    background: transparent;
+    border-radius: 15px;
+    border:1px solid black;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    color:black;
+}
+button:hover{
+    border:1px solid #29a53c;
+    color:#29a53c;
+    background: white;
+
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition: .5s;
+}
+
+select{
+    margin-top: 4px;
+    height:32px;
+}
+
+.has-margin{
+    margin-left: 900px;
+}
+#btn.has-margin{
+    margin-bottom: 60px;
+}
+th, tr{
+    padding-right: 30px;
+}
+.user-login th, .sluzba-login th{
+    padding-right: 0px;
+
+}
+.stavke input{
+    width: 200px;
+    font-size: 21px;
+    display: inline;
+}
+select, option{
+    width: 200px;
+    font-size: 18px;
+
+}
+#redniBr{
+    width:80px;
+    text-align: center;
+}
+
+.centered{
+    margin: 0 40%;
+    overflow: hidden;
+}
+.centered#shown{
+    overflow: visible;
+}
+#datumZahtev{
+    margin-right: 30px;
+}
+
+
+.applicants-details-form label,.applicants-details-form input {
+    display:block;
+}
+
+.noPaddingInput th{
+    padding: 0px;
+    margin: 0px!important;
+}
+
+.applicants-details-form-first{
+    display: inline;  
+    padding-bottom: 100px;
+}
+h1{
+    padding-top: 60px;
+    font-weight: bold;
+    font-size: 38px;
+    text-align: center;
+    font-family: "Abel";
+}
+#noMarginh1{
+    padding-top: 0px;
+
+}
+hr{
+    margin-bottom: 30px;
+}
+.zahtevTitle{
+    padding-bottom: 20px;
+}
+
+.padding{
+    margin-bottom: 40px;
+}
+
+.login{
+    margin: 5% 33%;
+    color: #152C42;
+}
+
+#btnLoginUser{
+    margin-left: 40px !important;
+    border:1px solid #152C42;
+    color:#152C42;
+}
+
+#btnLoginSluzba{
+    margin-left: 40px !important;
+
+}
+
+#podnaslov{
+    font-size: 30px;
+    text-align: center;
+    padding-bottom: 50px;
+}
+
+#login.layer{
+    width: 52%;
+    margin-top: -100px;
+
+    border-radius: 500px 2000px 0px;
+}
+
+#msg{
+    height:200px;
+}
+#click:hover{
+    color:#29a53c;
+}
+
+#has-padding{
+    padding: 20px  80px 20px 0 ;
+
+}
+
+thead{
+    color:green;
+}
+
+#prikaziZahtev{
+    padding: 50px 0;
+}

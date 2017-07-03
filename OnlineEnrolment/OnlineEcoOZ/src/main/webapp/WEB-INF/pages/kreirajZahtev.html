@@ -1,0 +1,150 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    </head>
+    <body>
+        <div th:fragment="zahtev" class="createForm">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <h1> <label th:text="#{create-request-title}" class="zahtevTitle"/></h1>
+                    <hr/>
+                </div>
+            </div>
+            <script type="text/javascript"
+            src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+            <div class="row" th:if="${noviZahtev==null}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form action="novi/zahtev" th:object="${zahtev}" method="post">
+                        <!-- COL 1-->
+                        <div class="applicants-details-form-first" >
+                            <label th:text="#{date }+ ' '+#{DATE_OF_BIRTH_PATTERN}"/>
+                            <input type="date" placeholder="dd-MM-yyyy"  id="datumZahtev" name="date" th:field="*{{datum}}" required="required"/> 
+                            <label th:text="#{korisnik}"/>
+                            <input type="text" th:field="${korisnik.user}"  disabled="false"/>
+                        </div>         
+                        <button class="has-margin" style="margin-left: 925px" name="confirm" th:text="#{confirm}"></button>                 
+                    </form>
+                </div>
+            </div>
+            <div class="row" th:if="${noviZahtev==null}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10" th:if="${zahtev.zahtevID!=0}">
+                    <h2>
+                        <label class="zahtevTitle" th:text="#{add-row-title}"/>
+                    </h2>
+                </div>
+            </div>
+            <div class="row"  th:if="${zahtev.zahtevID!=0}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10" th:if="${noviZahtev==null}">
+                    <form action="zapamti/zahtev" th:object="${zahtev}"   method="post">
+                        <div class="applicants-details-form">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th th:text="#{redniBroj}"/>
+                                        <th th:text="#{kolicina}"/>
+                                        <th th:text="#{materijal}"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="stavkaZah, stat : *{listaStavki}">
+                                        <td>
+                                            <input id="redniBr" th:value="${stat.index+1}" type="text" disabled="true"/>
+                                        </td>
+
+                                        <td>
+                                            <input th:value="*{listaStavki[__${stat.index}__].kolicina}" th:field="*{listaStavki[__${stat.index}__].kolicina}" type="text" required="required"/>
+                                        </td>
+                                        <td>
+                                            <select th:value="*{listaStavki[__${stat.index}__].materijal}" th:field="*{listaStavki[__${stat.index}__].materijal}" required="required">
+                                                <option th:each="materijal : ${materijali}" 
+                                                        th:value="${materijal}" 
+                                                        th:text="#{${'materijali.materijal.' + materijal}}"></option> 
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>   
+                        <div class="col-md-2"  th:if="${noviZahtev==null}">
+                            <button class="has-margin" th:text="#{addRow}"  type="submit"  name="action" value="addRowStavkaZah"/>
+                            <div class="row" th:if="*{!#lists.isEmpty(listaStavki)}">
+                                <button class="has-margin" type="submit"  name="action" value="sacuvaj" th:text="#{submit}"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="row" th:if="${noviZahtev!=null}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <h2>
+                        <label class="zahtevTitle" th:text="#{request-saved}"/>
+                    </h2>
+                </div>
+            </div>
+            <div class="row" th:if="${zahtev.zahtevID!=0}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form th:if="${noviZahtev!=null}" id="prikaziZahtev" >
+                        <div class="applicants-details-form">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th th:text="#{zahtevID}"/>
+                                        <th th:text="#{total}"/>
+                                        <th th:text="#{date}"/>
+                                        <th th:text="#{redniBroj}"/>
+                                        <th th:text="#{kolicina}"/>
+                                        <th th:text="#{materijal}"/>
+                                        <th th:text="#{user}"/>
+                                        <th th:text="#{givenName}"/>
+                                        <th th:text="#{surname}"/>
+                                        <th th:text="#{street}"/>
+                                        <th th:text="#{houseNumber}"/>
+                                        <th th:text="#{city}"/>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <th:block th:each="ob, static : ${noviZahtev.listaStavki}" >
+                                        <tr>
+                                            <th th:text="${noviZahtev.zahtevID}" />  
+                                            <th th:text="${noviZahtev.ukupno}" /> 
+                                            <th th:text="${{noviZahtev.datum}}" />  
+                                            <th th:text="${noviZahtev.listaStavki[__${static.index}__].redniBroj}" ></th> 
+                                            <th th:text="${noviZahtev.listaStavki[__${static.index}__].kolicina}"></th> 
+                                            <th th:text="${noviZahtev.listaStavki[__${static.index}__].materijal}"></th>  
+                                            <th th:text="${noviZahtev.korisnik.user}"></th>                                        
+                                            <th th:text="${noviZahtev.korisnik.ime}"></th>                                        
+                                            <th th:text="${noviZahtev.korisnik.prezime}"></th> 
+                                            <th th:text="${noviZahtev.korisnik.ulica}"></th>                                        
+                                            <th th:text="${noviZahtev.korisnik.brKuce}"></th>                                        
+                                            <th th:text="${noviZahtev.korisnik.grad}"></th>                                        
+
+
+                                        </tr>
+                                    </th:block>
+                                </tbody>
+                            </table>
+                        </div>   
+                        <div class="col-md-2" th:if="*{!#lists.isEmpty(listaStavki)}">
+                            <button class="has-margin" name="submit" th:text="#{submit}"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

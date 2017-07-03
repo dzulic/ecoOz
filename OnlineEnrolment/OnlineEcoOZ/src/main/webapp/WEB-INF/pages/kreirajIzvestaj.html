@@ -1,0 +1,100 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title/>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="createForm" th:fragment="izvestaj">
+                <h1>
+                    <label class="izvestajTitle" th:text="#{create-report-title}"/>
+                </h1>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        <form action="novi/izvestaj" method="post" th:object="${izvestaj}">
+                            <table>
+                                <thead>
+                                    <div class="padding">
+                                        <th th:text="#{datumIzvestaja}"/>
+                                        <td>
+                                            <input placeholder="dd-MM-yyyy" th:field="*{{datum}}" type="date" required="required"/>
+                                        </td>
+                                        <th th:text="#{sluzba}"/>
+                                        <td>
+                                            <input disabled="true" th:field="${sluzba.naziv}" type="text"/>
+                                        </td>
+                                    </div>
+                                </thead>
+                            </table>
+                            <button class="has-margin" name="confirm" th:text="#{confirm}"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10" th:if="${izvestaj.ID!=0}">
+                        <h2>
+                            <label class="izvestajTitle" th:text="#{add-row-title}"/>
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10" th:if="${izvestaj.ID!=0}">
+                        <form action="zapamti/izvestaj" th:object="${izvestaj}" method="post">
+                            <div class="applicants-details-form">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th th:text="#{redniBroj}"/>
+                                            <th th:text="#{datumIzvestaj}"/>
+                                            <th th:text="#{datumZahteva}"/>
+                                            <th th:text="#{kolicina}"/>
+                                            <th th:text="#{materijal}"/>
+                                            <th th:text="#{korisnik}"/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="stavkaIzv, stat : *{listaStavki}">
+                                            <td>
+                                                <input id="redniBr" th:value="${stat.index+1}" type="text" disabled="true"/>
+                                            </td>
+                                            <td>
+                                                <input type="date" th:field="*{{listaStavki[__${stat.index}__].izvestaj.datum}}"  required="required"/>
+                                            </td>
+                                            <td>
+                                                <input th:field="*{{listaStavki[__${stat.index}__].datum}}" type="date" required="required"/>
+                                            </td>
+                                            <td>
+                                                <input th:field="*{listaStavki[__${stat.index}__].kolicina}" type="text" required="required"/>
+                                            </td>
+                                            <td>
+                                                <select th:field="*{listaStavki[__${stat.index}__].materijal}" required="required">
+                                                    <option th:each="materijal : ${materijali}" 
+                                                            th:value="${materijal}" 
+                                                            th:text="#{${'materijali.materijal.' + materijal}}"></option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input th:field="*{listaStavki[__${stat.index}__].korisnik.user}" type="text" required="required"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button class="has-margin" type="submit"  name="action" value="addRowIzvestaj" th:text="#{addRow}"/>
+                            <div class="row" th:if="*{!#lists.isEmpty(listaStavki)}">
+                                <button class="has-margin"  th:text="#{submit}"  name="action" type="submit" value="sacuvaj" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

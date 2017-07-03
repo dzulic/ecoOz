@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title></title>
+    </head>
+    <body>
+
+        <div th:fragment="user-menu">
+   
+            <div class="navbar-main">
+                <script type="text/javascript"
+                        src="http://code.jquery.com/jquery-1.10.1.min.js">
+                </script>
+                <script type="text/javascript">
+                    function reload() {
+                        $.ajax({
+                            type: "POST",
+                            url: "reload"
+                        }
+                        );
+                    }
+                </script>
+                <ul class="navbar-nav">
+                    <li class="create-request-li"><a th:href="@{/{page}(page='kreirajZahtev::zahtev')}" th:text="#{create-request}" th:onclick="'javascript:reload();'">Search</a></li>
+                    <li class="search-request-li"><a th:href="@{/{page}(page='pretraziZahteve::zahtev')}" th:text="#{search-request}" th:onclick="'javascript:reload();'">Create new officer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div th:fragment="transport-menu">
+            <script type="text/javascript"
+                    src="http://code.jquery.com/jquery-1.10.1.min.js">
+            </script>
+            <script type="text/javascript">
+                function reload() {
+                    $.ajax({
+                        type: "POST",
+                        url: "reload"
+                    }
+                    );
+                }
+            </script>
+            <div class="navbar-main">
+                <ul class="navbar-nav">
+                    <li class="search-duty-li"><a th:href="@{/{page}(page='pretraziZaduzenja::zaduzenje')}" th:text="#{search-duty}" th:onclick="'javascript:reload();'"/></li>
+                    <li class="create-report-li" ><a th:href="@{/{page}(page='kreirajIzvestaj::izvestaj')}" th:text="#{create-report}" th:onclick="'javascript:reload();'"/></li>
+                    <li class="search-report-li"><a th:href="@{/{page}(page='pretraziIzvestaje::izvestaj')}" th:text="#{search-report}" th:onclick="'javascript:reload();'"/></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
