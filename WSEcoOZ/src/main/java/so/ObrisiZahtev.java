@@ -22,13 +22,15 @@ public class ObrisiZahtev extends SOAbstract {
     Boolean isDeleted;
     Zahtev zahtev;
     Logger logger = Logger.getLogger(KreirajKorisnika.class);
+    StavkaZahteva stavkaZahteva;
 
-    List<StavkaZahteva> lista;
-
-    public ObrisiZahtev(List<OpstiDomenskiObjekat> odo) {
-        lista = new ArrayList<>();
-        for (OpstiDomenskiObjekat opstiDomenskiObjekat : odo) {
-            lista.add((StavkaZahteva) opstiDomenskiObjekat);
+    public ObrisiZahtev(OpstiDomenskiObjekat odo) {
+        if (odo instanceof Zahtev) {
+            zahtev = (Zahtev) odo;
+            stavkaZahteva = null;
+        } else {
+            stavkaZahteva = (StavkaZahteva) odo;
+            zahtev = null;
         }
     }
 
@@ -38,14 +40,18 @@ public class ObrisiZahtev extends SOAbstract {
 
     @Override
     public void execute() {
-        for (StavkaZahteva stavkaZahteva : lista) {
+        if (stavkaZahteva != null) {
             session.createNativeQuery("delete from stavka_zahteva where redniBroj=:rb and zahtev_zahtevID=:ID")
                     .setParameter("rb", stavkaZahteva.getRedniBroj())
                     .setParameter("ID", stavkaZahteva.getZahtev().getZahtevID()).executeUpdate();
+
+            session.createNativeQuery("delete from zaduzenja where zahtev_zahtevID=:ID")
+                    .setParameter("ID", stavkaZahteva.getZahtev().getZahtevID()).executeUpdate();
+        } else if (zahtev != null) {
+            session.delete(zahtev);
+            session.createNativeQuery("delete from zaduzenja where zahtev_zahtevID=:ID")
+                    .setParameter("ID", zahtev.getZahtevID()).executeUpdate();
         }
-        session.createNativeQuery("delete from zaduzenja where zahtev_zahtevID=:ID")
-                .setParameter("ID", lista.get(0).getZahtev().getZahtevID()).executeUpdate();
-        session.delete(lista.get(0).getZahtev());
         httpStatus = HttpStatus.OK;
 
     }

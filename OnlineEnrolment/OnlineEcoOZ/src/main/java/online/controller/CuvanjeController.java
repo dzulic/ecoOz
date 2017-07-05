@@ -40,7 +40,7 @@ public class CuvanjeController extends EnrolmentController {
             newObject.setZahtevID(zahtev.getZahtevID());
         }
         List<OpstiDomenskiObjekat> listaTransfer = new ArrayList<>();
-        int rb = 0;
+        int rb = 1;
         double sum = 0;
         zahtev = newObject;
         if (newObject.getListaStavki() != null) {

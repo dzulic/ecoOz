@@ -146,7 +146,7 @@ public class Service extends AbstractService {
     }
 
     @Override
-    public TransferObjekat delete(List<OpstiDomenskiObjekat> odo) {
+    public TransferObjekat delete(OpstiDomenskiObjekat odo) {
         SOAbstract operacija = new ObrisiZahtev(odo);
         db.dataBaseOperation(operacija);
         return new TransferObjekat(null, operacija.getHttpStatus());

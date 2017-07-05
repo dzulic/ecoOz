@@ -52,7 +52,7 @@ public abstract class AbstractService {
 
     public abstract List<LinkedHashMap> list(OpstiDomenskiObjekat odo, String type);
 
-    public abstract void delete(List<OpstiDomenskiObjekat> odo, String type);
+    public abstract void delete(OpstiDomenskiObjekat odo, String type);
 
     public abstract void update(List<OpstiDomenskiObjekat> odo, String type);
 

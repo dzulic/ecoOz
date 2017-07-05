@@ -24,7 +24,7 @@ public abstract class AbstractService {
 
     public abstract TransferObjekat get(OpstiDomenskiObjekat odo, String type);
 
-    public abstract TransferObjekat delete(List<OpstiDomenskiObjekat> odo);
+    public abstract TransferObjekat delete(OpstiDomenskiObjekat odo);
 
     public abstract TransferObjekat update(List<OpstiDomenskiObjekat> obj);
 

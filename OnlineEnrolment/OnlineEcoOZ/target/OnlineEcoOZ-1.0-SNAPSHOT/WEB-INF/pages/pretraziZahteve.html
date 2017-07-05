@@ -114,21 +114,25 @@
 
                     }
                     function updateRow(rb) {
+                        var s = rb + "";
+                        alert(rb);
                         $.ajax({
                             type: "POST",
                             url: "edit/zahtev/update",
-                            data: rb
+                            data: {'rb': s}
                         }
                         ).done(function () {
                             window.location.reload(true);
                         });
 
                     }
-                    function deleteRow(rb) {
+                    function deleteRow(rb, zID) {
+                        var s = rb + "";
+                        var s1 = zID + "";
                         $.ajax({
                             type: "POST",
-                            url: "edit/zahtev/update",
-                            data: rb
+                            url: "edit/zahtev/delete",
+                            data: {'rb': s, 'zID': s1}
                         }
                         ).done(function () {
                             window.location.reload(true);
@@ -169,17 +173,17 @@
                                                 </th>
                                                 <div class="row" th:if="${pomocniZahtev !=null}">
                                                     <th>
-                                                        <button class="inline-buttons" type="button"  th:onclick="'javascript:updateRow(\'' + ${static.index}  + '\');'" th:text="#{update}"/>
-                                                        <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + ${static.index}  + '\');'" th:text="#{delete}"/>
+                                                        <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + ${static.index} + '\',\''  + *{zahtevID} + '\');'" th:text="#{delete}"/>
                                                     </th>
                                                 </div>  
                                             </tr>
-
                                         </th:block>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="row" th:if="${pomocniZahtev !=null}">
+                                <button class="has-margin" th:text="#{addRow}"  type="submit"  name="action" value="addRowStavkaZah"/>
+                                <button class="has-margin" name="action" type="submit" value="update" th:text="#{update}"/>
                                 <button class="has-margin" type="submit"  name="action" value="delete" th:text="#{delete-all}"/>
                             </div>  
                         </form>

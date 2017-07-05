@@ -71,14 +71,12 @@ public class MainController {
     public ResponseEntity<String> deleteData(@RequestBody String odo, @PathVariable String type) {
         ObjectMapper mapper = new ObjectMapper();
         TransferObjekat to = null;
-        Class<?> clz = Constants.returnClassForType(type);
-        JavaType t = mapper.getTypeFactory().constructCollectionType(List.class, clz);
         try {
-            to = service.delete((List<OpstiDomenskiObjekat>) mapper.readValue(odo, t));
+            to = service.delete((OpstiDomenskiObjekat) new ObjectMapper().reader().forType(Constants.returnClassForType(type)).readValue(odo));
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return new ResponseEntity<String>(to.getHttpStatus());
+        return new ResponseEntity<>(to.getHttpStatus());
 
     }
 

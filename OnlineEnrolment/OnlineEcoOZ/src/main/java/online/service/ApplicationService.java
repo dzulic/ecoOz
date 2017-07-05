@@ -98,7 +98,7 @@ public class ApplicationService extends AbstractService {
     }
 
     @Override
-    public void delete(List<OpstiDomenskiObjekat> odo, String type) throws ResourceAccessException {
+    public void delete(OpstiDomenskiObjekat odo, String type) throws ResourceAccessException {
         initializeRest();
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

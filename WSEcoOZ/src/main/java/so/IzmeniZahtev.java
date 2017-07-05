@@ -28,15 +28,27 @@ public class IzmeniZahtev extends SOAbstract {
 
     @Override
     public void execute() {
+        int sum = 0;
         for (StavkaZahteva stavkaZahteva : stavke) {
-            session.createNativeQuery("update stavka_zahteva set kolicina=:kol and materijal=:mat where redniBroj=:rb and zahtev_zahtevID=:ID")
-                    .setParameter("kol", stavkaZahteva.getKolicina())
-                    .setParameter("mat", stavkaZahteva.getMaterijal())
-                    .setParameter("rb", stavkaZahteva.getRedniBroj())
-                    .setParameter("ID", stavkaZahteva.getZahtev().getZahtevID()).executeUpdate();
+            sum += stavkaZahteva.getKolicina();
+            StavkaZahteva found = null;
+            try {
+                found = session.get(StavkaZahteva.class, stavkaZahteva);
+            } catch (Exception e) {
+
+            }
+            if (found == null) {
+                session.save(stavkaZahteva);
+            } else {
+                session.createNativeQuery("update stavka_zahteva set kolicina=:kol and materijal=:mat where redniBroj=:rb and zahtev_zahtevID=:ID")
+                        .setParameter("kol", stavkaZahteva.getKolicina())
+                        .setParameter("mat", stavkaZahteva.getMaterijal())
+                        .setParameter("rb", stavkaZahteva.getRedniBroj())
+                        .setParameter("ID", stavkaZahteva.getZahtev().getZahtevID()).executeUpdate();
+            }
         }
         session.createNativeQuery("update zahtev set ukupno=:sum where zahtevID=:ID")
-                .setParameter("sum", stavke.get(0).getZahtev().getUkupno()).
+                .setParameter("sum", sum).
                 setParameter("ID", stavke.get(0).getZahtev().getZahtevID()).executeUpdate();
 
         httpStatus = HttpStatus.OK;
