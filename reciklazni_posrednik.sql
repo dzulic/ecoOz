@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `reciklazni_posrednik` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `reciklazni_posrednik`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: reciklazni_posrednik
@@ -41,7 +39,6 @@ CREATE TABLE `izvestaj` (
 
 LOCK TABLES `izvestaj` WRITE;
 /*!40000 ALTER TABLE `izvestaj` DISABLE KEYS */;
-INSERT INTO `izvestaj` VALUES (3,'2017-07-05',1),(4,'2017-07-20',1),(9,'2017-07-20',1);
 /*!40000 ALTER TABLE `izvestaj` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,19 +109,24 @@ DROP TABLE IF EXISTS `stavka_izvestaja`;
 CREATE TABLE `stavka_izvestaja` (
   `redniBroj` int(11) NOT NULL,
   `izvestaj_ID` int(11) NOT NULL,
-  `datumPreuzeca` date DEFAULT NULL,
   `kolicina` double DEFAULT NULL,
   `materijal` varchar(30) DEFAULT NULL,
   `korisnik_brLicne` varchar(20) DEFAULT NULL,
+  `zaduzenjaID` int(30) DEFAULT NULL,
   `datum` date DEFAULT NULL,
+  `zaduzenja_zaduzenjaID` int(11) DEFAULT NULL,
   PRIMARY KEY (`redniBroj`,`izvestaj_ID`),
   KEY `brLicne` (`korisnik_brLicne`),
   KEY `stavka_izvestaja_ibfk_1` (`izvestaj_ID`),
+  KEY `zaduzenjaID_idx` (`zaduzenjaID`),
+  KEY `FKgadjmdj4bw8l21waqygetghlx` (`zaduzenja_zaduzenjaID`),
+  CONSTRAINT `FKgadjmdj4bw8l21waqygetghlx` FOREIGN KEY (`zaduzenja_zaduzenjaID`) REFERENCES `zaduzenja` (`zaduzenjaID`),
   CONSTRAINT `FK86cxk62yyy3i4fi89m12ahua3` FOREIGN KEY (`izvestaj_ID`) REFERENCES `izvestaj` (`ID`),
   CONSTRAINT `FKc5hev0nkombf0circsbu420uc` FOREIGN KEY (`korisnik_brLicne`) REFERENCES `korisnik` (`brLicne`),
   CONSTRAINT `FKkljgsnxna1kd8ptc7dnw2lt58` FOREIGN KEY (`izvestaj_ID`) REFERENCES `izvestaj` (`ID`),
   CONSTRAINT `stavka_izvestaja_ibfk_1` FOREIGN KEY (`izvestaj_ID`) REFERENCES `izvestaj` (`ID`),
-  CONSTRAINT `stavka_izvestaja_ibfk_2` FOREIGN KEY (`korisnik_brLicne`) REFERENCES `korisnik` (`brLicne`)
+  CONSTRAINT `stavka_izvestaja_ibfk_2` FOREIGN KEY (`korisnik_brLicne`) REFERENCES `korisnik` (`brLicne`),
+  CONSTRAINT `zaduzenjaID` FOREIGN KEY (`zaduzenjaID`) REFERENCES `zaduzenja` (`zaduzenjaID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -134,7 +136,6 @@ CREATE TABLE `stavka_izvestaja` (
 
 LOCK TABLES `stavka_izvestaja` WRITE;
 /*!40000 ALTER TABLE `stavka_izvestaja` DISABLE KEYS */;
-INSERT INTO `stavka_izvestaja` VALUES (1,3,NULL,7,'staklo','1414141414141','2017-06-28'),(1,4,NULL,66,'plastika','1414141414141','2017-06-27'),(1,9,NULL,1,'plastika','1414141414141','2017-06-29'),(2,4,NULL,7,'staklo','3232323232323','2017-06-26');
 /*!40000 ALTER TABLE `stavka_izvestaja` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +164,6 @@ CREATE TABLE `stavka_zahteva` (
 
 LOCK TABLES `stavka_zahteva` WRITE;
 /*!40000 ALTER TABLE `stavka_zahteva` DISABLE KEYS */;
-INSERT INTO `stavka_zahteva` VALUES (1,3,2,'staklo'),(1,5,2,'staklo'),(1,7,2,'papir'),(1,9,8,'papir'),(1,24,54,'papir'),(2,3,0.5,'plastika'),(2,5,33,'plastika'),(2,7,0.3,'papir'),(2,24,1,'plastika');
 /*!40000 ALTER TABLE `stavka_zahteva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,10 +175,12 @@ DROP TABLE IF EXISTS `zaduzenja`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `zaduzenja` (
-  `zaduzenjaID` int(11) NOT NULL,
+  `zaduzenjaID` int(30) NOT NULL,
   `datum` date DEFAULT NULL,
   `sluzba_PIB` int(11) DEFAULT NULL,
   `zahtev_zahtevID` int(11) DEFAULT NULL,
+  `stanje` tinyint(1) DEFAULT '0',
+  `checked` bit(1) NOT NULL,
   PRIMARY KEY (`zaduzenjaID`),
   KEY `zaduzenja_ibfk_1` (`sluzba_PIB`),
   KEY `zahtevID_idx` (`zahtev_zahtevID`),
@@ -195,7 +197,6 @@ CREATE TABLE `zaduzenja` (
 
 LOCK TABLES `zaduzenja` WRITE;
 /*!40000 ALTER TABLE `zaduzenja` DISABLE KEYS */;
-INSERT INTO `zaduzenja` VALUES (1002,'2017-06-29',2,3),(1004,'2017-06-30',1,5),(1005,'2017-07-01',1,7),(1006,'2017-07-01',1,9),(1007,'2017-07-03',1,24);
 /*!40000 ALTER TABLE `zaduzenja` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +225,6 @@ CREATE TABLE `zahtev` (
 
 LOCK TABLES `zahtev` WRITE;
 /*!40000 ALTER TABLE `zahtev` DISABLE KEYS */;
-INSERT INTO `zahtev` VALUES (3,'2017-06-30','1414141414141',2.5),(5,'2017-07-05','1414141414141',35),(7,'2017-07-02','1414141414141',2.3),(9,'2017-07-08','1414141414141',8),(24,'2017-07-12','1414141414141',55);
 /*!40000 ALTER TABLE `zahtev` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -237,4 +237,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-03 19:21:41
+-- Dump completed on 2017-07-06  0:18:35
