@@ -5,25 +5,31 @@
  */
 package online.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import domen.Izvestaj;
 import domen.OpstiDomenskiObjekat;
 import domen.StavkaIzvestaja;
 import domen.StavkaZahteva;
+import domen.Zaduzenja;
 import domen.Zahtev;
 import exceptions.CustomException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import static online.controller.EnrolmentController.izvestaj;
+import static online.controller.EnrolmentController.listaZahteva;
 import static online.controller.EnrolmentController.message;
 import static online.controller.EnrolmentController.noviZahtev;
 import static online.controller.EnrolmentController.sluzba;
+import static online.controller.EnrolmentController.stavkeZah;
 import static online.controller.EnrolmentController.zahtev;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import util.Constants;
+import utils.Wrapper;
 
 /**
  *
@@ -32,7 +38,7 @@ import util.Constants;
 @Controller
 @RequestMapping("/zapamti")
 public class CuvanjeController extends EnrolmentController {
-
+    
     @RequestMapping(path = "/zahtev", method = RequestMethod.POST, params = "action=sacuvaj")
     public String zapamtiZahtev(@ModelAttribute("zahtev") Zahtev newObject) throws CustomException {
         message = "";
@@ -54,7 +60,7 @@ public class CuvanjeController extends EnrolmentController {
                 if (s.getMaterijal().equals("select")) {
                     throw new CustomException("Izaberite materijal");
                 }
-
+                
                 sum += s.getKolicina();
                 listaTransfer.add(s);
             }
@@ -64,7 +70,7 @@ public class CuvanjeController extends EnrolmentController {
             newObject.setUkupno(sum);
             ((StavkaZahteva) listaTransfer.get(0)).setZahtev(newObject);
             try {
-
+                
                 service.save(listaTransfer, Constants.STAVKA_ZAHTEVA);
                 message = "Sistem je zapamtio zahtev";
                 noviZahtev = newObject;
@@ -74,7 +80,7 @@ public class CuvanjeController extends EnrolmentController {
         }
         return "redirect:/";
     }
-
+    
     @RequestMapping(value = "/zahtev", params = "action=addRowStavkaZah")
     public String addRowZah(@ModelAttribute("zahtev") Zahtev z) {
         message = "";
@@ -88,7 +94,7 @@ public class CuvanjeController extends EnrolmentController {
         }
         return "redirect:/";
     }
-
+    
     @RequestMapping(path = "/izvestaj", method = RequestMethod.POST, params = "action=sacuvaj")
     public String zapamtiIzvestaj(@ModelAttribute("izvestaj") Izvestaj newObject) throws CustomException {
         message = "";
@@ -101,9 +107,7 @@ public class CuvanjeController extends EnrolmentController {
             for (StavkaIzvestaja s : newObject.getListaStavki()) {
                 rb += 1;
                 s.setRedniBroj(rb);
-                if (s.getDatum().after(new Date())) {
-                    throw new CustomException("Datum ne moze biti posle danasnjeg");
-                }
+                
                 if (s.getKolicina() == 0) {
                     throw new CustomException("Kolicina ne sme bii 0");
                 }
@@ -127,7 +131,7 @@ public class CuvanjeController extends EnrolmentController {
             throw new CustomException("Sistem ne moze da zapamti izvestaj");
         }
     }
-
+    
     @RequestMapping(value = "/izvestaj", params = "action=addRowIzvestaj")
     public String addRowIzv(@ModelAttribute("izvestaj") Izvestaj iz) {
         message = "";
@@ -137,9 +141,43 @@ public class CuvanjeController extends EnrolmentController {
                 izvestaj.setListaStavki(new ArrayList<>());
             }
             izvestaj.getListaStavki().add(new StavkaIzvestaja());
-
+            
             modelAndView.addObject("izvestaj", izvestaj);
         }
         return "redirect:/";
+    }
+    
+    @RequestMapping("/izvestaj/add")
+    public String foo(@ModelAttribute("wrapper") Wrapper w) {
+        for (Zaduzenja wZ : w.getListaZaduzenja()) {
+            if (wZ.isChecked()) {
+                StavkaZahteva szPretraga = new StavkaZahteva();
+                szPretraga.setZahtev(wZ.getZahtev());
+                wZ.getZahtev().setListaStavki(getZahteve(service.list(szPretraga, Constants.STAVKA_ZAHTEVA)));
+                for (StavkaZahteva sz : wZ.getZahtev().getListaStavki()) {
+                    StavkaIzvestaja si = new StavkaIzvestaja();
+                    si.setKolicina(sz.getKolicina());
+                    si.setKorisnik(wZ.getZahtev().getKorisnik());
+                    si.setMaterijal(sz.getMaterijal());
+                    si.setDatum(wZ.getZahtev().getDatum());
+                    si.setZaduzenja(wZ);
+                    if (izvestaj.getListaStavki() == null) {
+                        izvestaj.setListaStavki(new ArrayList<StavkaIzvestaja>());
+                    }
+                    izvestaj.getListaStavki().add(si);
+                }
+            }
+        }
+        return "redirect:/";
+    }
+    
+    public List<StavkaZahteva> getZahteve(List<LinkedHashMap> list) {
+        ObjectMapper mapper = new ObjectMapper();
+        List<StavkaZahteva> stavke = new ArrayList<>();
+        for (LinkedHashMap map : list) {
+            StavkaZahteva s = mapper.convertValue(map, StavkaZahteva.class);
+            stavke.add(s);
+        }
+        return stavke;
     }
 }

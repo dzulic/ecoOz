@@ -25,7 +25,7 @@ public class PrikaziZaduzenje extends SOAbstract {
 
     @Override
     public void execute() {
-        List<OpstiDomenskiObjekat> lista = session.createNativeQuery("SELECT * from zaduzenja where zaduzenjaID=" + zaduzenja.getZaduzenjaID()).addEntity(Zaduzenja.class).list();
+        List<OpstiDomenskiObjekat> lista = session.createNativeQuery("SELECT * from zaduzenja where zaduzenjaID=" + zaduzenja.getZaduzenjaID() ).addEntity(Zaduzenja.class).list();
         objekat = lista.get(0);
         httpStatus = HttpStatus.OK;
     }

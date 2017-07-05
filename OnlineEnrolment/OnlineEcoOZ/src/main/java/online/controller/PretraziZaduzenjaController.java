@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import util.Constants;
+import utils.Wrapper;
 
 /**
  *
@@ -67,6 +68,8 @@ public class PretraziZaduzenjaController extends EnrolmentController {
                 message = "Sistem nije pronasao zaduzenja";
                 return "redirect:/";
             }
+            wrapper = new Wrapper();
+            wrapper.setListaZaduzenja(listaZaduzenja);
             message = "Sistem je pronasao zaduzenja";
             return "redirect:/";
         } catch (Exception e) {

@@ -41,9 +41,20 @@ public class StavkaIzvestaja implements OpstiDomenskiObjekat {
     @ManyToOne
     @JsonIgnore
     private Izvestaj izvestaj;
+    @ManyToOne
+    @JoinColumn
+    Zaduzenja zaduzenja;
 
     public Izvestaj getIzvestaj() {
         return izvestaj;
+    }
+
+    public Zaduzenja getZaduzenja() {
+        return zaduzenja;
+    }
+
+    public void setZaduzenja(Zaduzenja zaduzenja) {
+        this.zaduzenja = zaduzenja;
     }
 
     public void setIzvestaj(Izvestaj izvestaj) {

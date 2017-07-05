@@ -36,6 +36,25 @@ public class Zaduzenja implements OpstiDomenskiObjekat {
     @JoinColumn
     @ManyToOne
     Zahtev zahtev;
+    public boolean checked;
+    @Column
+    public boolean stanje;
+
+    public boolean isStanje() {
+        return stanje;
+    }
+
+    public void setStanje(boolean stanje) {
+        this.stanje = stanje;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     public int getZaduzenjaID() {
         return zaduzenjaID;

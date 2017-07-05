@@ -7,10 +7,8 @@ package online.controller;
 
 import domen.Izvestaj;
 import domen.Korisnik;
-import domen.StavkaZahteva;
 import domen.Zahtev;
 import exceptions.CustomException;
-import java.util.ArrayList;
 import java.util.Date;
 import javax.validation.Valid;
 import static online.controller.EnrolmentController.izvestaj;
@@ -74,8 +72,6 @@ public class KreiraјController extends EnrolmentController {
         return "redirect:/";
     }
 
-
-
     //3
     @RequestMapping(path = "/izvestaj", method = RequestMethod.POST)
     public String kreirajNoviIzvestaj(@Valid
@@ -94,9 +90,11 @@ public class KreiraјController extends EnrolmentController {
                 izvestaj.setID(Integer.parseInt(id));
             }
             modelAndView.addObject("message", message);
-            return "redirect:/";
+            return "redirect:/get/zaduzenja/selected";
         } catch (Exception e) {
             throw new CustomException("Sistem ne moze da kreira izvestaj");
         }
     }
+
+ 
 }

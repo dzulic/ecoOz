@@ -9,6 +9,7 @@ import domen.Izvestaj;
 import domen.Korisnik;
 import domen.OpstiDomenskiObjekat;
 import domen.StavkaIzvestaja;
+import domen.Zaduzenja;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class ZapamtiIzvestaj extends SOAbstract {
     public ZapamtiIzvestaj(List<OpstiDomenskiObjekat> odo) {
         iz = new ArrayList<>();
         for (OpstiDomenskiObjekat o : odo) {
-           iz.add((Izvestaj)o);
+            iz.add((Izvestaj) o);
         }
 
     }
@@ -37,6 +38,10 @@ public class ZapamtiIzvestaj extends SOAbstract {
                 List list = session.createNativeQuery(
                         "select * from korisnik where user='" + stavkaIzvestaja.getKorisnik().getUser() + "'").addEntity(Korisnik.class).list();
                 stavkaIzvestaja.setKorisnik((Korisnik) list.get(0));
+                if (stavkaIzvestaja.getZaduzenja() != null) {
+                    session.createNativeQuery("UPDATE zaduzenja SET stanje = true WHERE zaduzenjaID=" + stavkaIzvestaja.getZaduzenja().getZaduzenjaID()).executeUpdate();
+                }
+                stavkaIzvestaja.getZaduzenja().setZahtev(null);
                 session.save(stavkaIzvestaja);
                 httpStatus = HttpStatus.OK;
             }

@@ -1,4 +1,5 @@
 online\controller\PretraziZaduzenjaController.class
+utils\Wrapper.class
 online\service\AbstractService.class
 online\controller\EnrolmentController.class
 exceptions\CustomException.class

@@ -26,9 +26,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.ModelAndView;
+import utils.Wrapper;
 
 /**
  *
@@ -65,6 +67,7 @@ public class EnrolmentController {
     public static List<Zahtev> listaZahteva;
     public static List<StavkaZahteva> stavkeZah;
     public static List<StavkaZahteva> pomocneStavkeZah;
+    public static Wrapper wrapper;
 
     public List<Izvestaj> listaIzvestaja;
 
@@ -80,6 +83,11 @@ public class EnrolmentController {
     @ModelAttribute("fragment")
     public String returnFrag() {
         return fragment;
+    }
+
+    @ModelAttribute("wrapper")
+    public Wrapper returnWrapp() {
+        return wrapper;
     }
 
     @ModelAttribute("materijali")
@@ -317,7 +325,7 @@ public class EnrolmentController {
     @RequestMapping("/deleteRowZahtev")
     public String deleteRowZahtev(String s) {
 
-        if (zahtev.getListaStavki() != null && s!=null) {
+        if (zahtev.getListaStavki() != null && s != null) {
             zahtev.getListaStavki().remove(Integer.parseInt(s));
         }
         modelAndView.addObject("zahtev", zahtev);
@@ -327,7 +335,7 @@ public class EnrolmentController {
 
     @RequestMapping("/deleteRowIzvestaj")
     public String deleteRowIzvestaj(String s) {
-        if (izvestaj.getListaStavki() != null && s!=null) {
+        if (izvestaj.getListaStavki() != null && s != null) {
             izvestaj.getListaStavki().remove(Integer.parseInt(s));
         }
         modelAndView.addObject("izvestaj", izvestaj);

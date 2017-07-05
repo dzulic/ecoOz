@@ -124,41 +124,55 @@
                         <div class="applicants-details-form">
                             <table>
                                 <thead>
-                                    <tr>
+                                    <tr>                                        
                                         <th th:text="#{zahtevID}"/>
                                         <th th:text="#{total}"/>
                                         <th th:text="#{date}"/>
-                                        <th th:text="#{redniBroj}"/>
-                                        <th th:text="#{kolicina}"/>
-                                        <th></th>
-                                        <th th:text="#{materijal}"/>
                                         <th th:text="#{user}"/>
                                         <th th:text="#{givenName}"/>
                                         <th th:text="#{surname}"/>
                                         <th th:text="#{street}"/>
                                         <th th:text="#{houseNumber}"/>
                                         <th th:text="#{city}"/>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th th:text="${noviZahtev.zahtevID}" />  
+                                        <th th:text="${noviZahtev.ukupno}" /> 
+                                        <th th:text="${{noviZahtev.datum}}" /> 
+                                        <th th:text="${noviZahtev.korisnik.user}"></th>                                        
+                                        <th th:text="${noviZahtev.korisnik.ime}"></th>                                        
+                                        <th th:text="${noviZahtev.korisnik.prezime}"></th> 
+                                        <th th:text="${noviZahtev.korisnik.ulica}"></th>                                        
+                                        <th th:text="${noviZahtev.korisnik.brKuce}"></th>                                        
+                                        <th th:text="${noviZahtev.korisnik.grad}"></th>                                        
 
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                            <h2>
+                                <label class="zahtevTitle" th:text="#{request-list}"/>
+                            </h2>
+                            <br/>
+                            <table>
+                                <thead>
+
+                                    <tr>
+                                        <th th:text="#{redniBroj}"/>
+                                        <th th:text="#{kolicina}"/>
+                                        <th></th>
+                                        <th th:text="#{materijal}"/>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <th:block th:each="ob, static : ${noviZahtev.listaStavki}" >
                                         <tr>
-                                            <th th:text="${noviZahtev.zahtevID}" />  
-                                            <th th:text="${noviZahtev.ukupno}" /> 
-                                            <th th:text="${{noviZahtev.datum}}" />  
                                             <th th:text="${noviZahtev.listaStavki[__${static.index}__].redniBroj}" ></th> 
                                             <th th:text="${noviZahtev.listaStavki[__${static.index}__].kolicina}"></th> 
                                             <th th:text="kg" id="redniBr"/>  
                                             <th th:text="${noviZahtev.listaStavki[__${static.index}__].materijal}"></th>  
-                                            <th th:text="${noviZahtev.korisnik.user}"></th>                                        
-                                            <th th:text="${noviZahtev.korisnik.ime}"></th>                                        
-                                            <th th:text="${noviZahtev.korisnik.prezime}"></th> 
-                                            <th th:text="${noviZahtev.korisnik.ulica}"></th>                                        
-                                            <th th:text="${noviZahtev.korisnik.brKuce}"></th>                                        
-                                            <th th:text="${noviZahtev.korisnik.grad}"></th>                                        
-
-
                                         </tr>
                                     </th:block>
                                 </tbody>

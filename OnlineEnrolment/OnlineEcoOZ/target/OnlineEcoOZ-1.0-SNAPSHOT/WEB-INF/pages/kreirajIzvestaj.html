@@ -33,6 +33,47 @@
                         </form>
                     </div>
                 </div>
+                <!-- PREKO ZADUZENJA -->
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10" th:if="${izvestaj.ID!=0}">
+                        <form action="zapamti/izvestaj/add" th:object="${wrapper}"  method="post">                
+                            <div class="applicants-details-form">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th th:text="select"/>
+                                            <th th:text="#{zaduzenjaID}"/>
+                                            <th th:text="#{datumZahtev}"/>
+                                            <th th:text="#{total}"/>
+                                            <th th:text="#{korisnik}"/>
+                                            <th th:text="#{street}"/>
+                                            <th th:text="#{houseNumber}"/>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <th:block th:if="${not #lists.isEmpty(listaZaduzenja)}">
+                                            <tr id="click" th:each="z, in : ${listaZaduzenja}" >
+                                                <td><input id="checkValues" type="checkbox"  th:field="*{listaZaduzenja[__${in.index}__].checked}" name="id"/></td>
+                                                <td th:text="${listaZaduzenja[__${in.index}__].zahtev.zahtevID}" id="redniBr"/>
+                                                <td th:text="${{listaZaduzenja[__${in.index}__].zahtev.datum}}"/>
+                                                <td th:text="${listaZaduzenja[__${in.index}__].zahtev.ukupno}" id="redniBr"/>
+                                                <td th:text="${listaZaduzenja[__${in.index}__].zahtev.korisnik.user}"/>
+                                                <td th:text="${listaZaduzenja[__${in.index}__].zahtev.korisnik.ulica}"/>
+                                                <td th:text="${listaZaduzenja[__${in.index}__].zahtev.korisnik.brKuce}"/>
+                                            </tr>
+
+                                        </th:block>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <button class="has-margin" type="submit" th:text="#{add}"/>
+                        </form>
+                    </div>
+                </div>
+                <!--/ PREKO ZADUZENJA -->
+
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-10" th:if="${izvestaj.ID!=0}">
@@ -68,7 +109,6 @@
                                     <thead>
                                         <tr>
                                             <th th:text="#{redniBroj}"/>
-                                            <th th:text="#{datumIzvestaj}"/>
                                             <th th:text="#{datumZahteva}"/>
                                             <th th:text="#{kolicina}"/>
                                             <th></th>
@@ -80,9 +120,6 @@
                                         <tr th:each="stavkaIzv, stat : *{listaStavki}">
                                             <td>
                                                 <input id="redniBr" th:value="${stat.index+1}" type="text" disabled="true"/>
-                                            </td>
-                                            <td>
-                                                <input type="date" th:field="*{{listaStavki[__${stat.index}__].izvestaj.datum}}"  required="required"/>
                                             </td>
                                             <td>
                                                 <input th:field="*{{listaStavki[__${stat.index}__].datum}}" type="date" required="required"/>
