@@ -28,14 +28,16 @@ import util.Constants;
  */
 @Controller
 @RequestMapping("/get/zahtev")
-public class PretraziZahteveController extends EnrolmentController{
-    
+public class PretraziZahteveController extends EnrolmentController {
+
     @RequestMapping(path = "/all")
     public String pretraziZahteve() throws CustomException {
         message = "";
         if (zahtev == null) {
             zahtev = new Zahtev();
         }
+        pomocniZahtev = null;
+        prikaziSZ = null;
         stavkeZah = new ArrayList<>();
         zahtev.setKorisnik(korisnik);
         StavkaZahteva sz = new StavkaZahteva();

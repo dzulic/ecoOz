@@ -5,11 +5,20 @@
  */
 package so;
 
+import domen.Izvestaj;
+import domen.Korisnik;
 import domen.OpstiDomenskiObjekat;
+import domen.SluzbaTransporta;
+import domen.StavkaIzvestaja;
 import domen.StavkaZahteva;
+import domen.Zaduzenja;
+import domen.Zahtev;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.http.HttpStatus;
+import util.Constants;
 
 /**
  *
@@ -18,40 +27,44 @@ import org.springframework.http.HttpStatus;
 public class IzmeniZahtev extends SOAbstract {
 
     List<StavkaZahteva> stavke;
+    String tip = "";
 
-    public IzmeniZahtev(List<OpstiDomenskiObjekat> obj) {
+    public IzmeniZahtev(List<OpstiDomenskiObjekat> obj, String tip) {
         stavke = new ArrayList<>();
+        this.tip=tip;
         for (OpstiDomenskiObjekat opstiDomenskiObjekat : obj) {
             stavke.add((StavkaZahteva) opstiDomenskiObjekat);
         }
+
     }
 
     @Override
     public void execute() {
         int sum = 0;
-        for (StavkaZahteva stavkaZahteva : stavke) {
-            sum += stavkaZahteva.getKolicina();
-            StavkaZahteva found = null;
+        if (tip.equals(Constants.STAVKA_ZAHTEVA)) {
+            for (StavkaZahteva stavkaZahteva : stavke) {
+                session.createNativeQuery("update stavka_zahteva set kolicina="+ stavkaZahteva.getKolicina()+ " , materijal='"+stavkaZahteva.getMaterijal()+"' where redniBroj="+ stavkaZahteva.getRedniBroj()+" and zahtev_zahtevID="+stavkaZahteva.getZahtev().getZahtevID())
+                        .executeUpdate();
+            }
+        } else {
             try {
-                found = session.get(StavkaZahteva.class, stavkaZahteva);
+                Zahtev found = (Zahtev) session.createNativeQuery("select * from zahtev where zahtevID=:ID")
+                        .setParameter("ID", stavke.get(0).getZahtev().getZahtevID()).addEntity(Zahtev.class).list().get(0);
+                for (StavkaZahteva s : found.getListaStavki()) {
+                    sum += s.getKolicina();
+                }
+                session.getTransaction().commit();
+                session.getTransaction().begin();
+
+                session.createNativeQuery("update zahtev set ukupno=:sum where zahtevID=:ID")
+                        .setParameter("sum", sum).
+                        setParameter("ID", stavke.get(0).getZahtev().getZahtevID()).executeUpdate();
             } catch (Exception e) {
 
             }
-            if (found == null) {
-                session.save(stavkaZahteva);
-            } else {
-                session.createNativeQuery("update stavka_zahteva set kolicina=:kol and materijal=:mat where redniBroj=:rb and zahtev_zahtevID=:ID")
-                        .setParameter("kol", stavkaZahteva.getKolicina())
-                        .setParameter("mat", stavkaZahteva.getMaterijal())
-                        .setParameter("rb", stavkaZahteva.getRedniBroj())
-                        .setParameter("ID", stavkaZahteva.getZahtev().getZahtevID()).executeUpdate();
-            }
         }
-        session.createNativeQuery("update zahtev set ukupno=:sum where zahtevID=:ID")
-                .setParameter("sum", sum).
-                setParameter("ID", stavke.get(0).getZahtev().getZahtevID()).executeUpdate();
-
         httpStatus = HttpStatus.OK;
+
     }
 
 }

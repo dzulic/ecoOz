@@ -41,6 +41,7 @@
                         </form>
                     </div>
                 </div>
+
                 <script type="text/javascript"
                         src="http://code.jquery.com/jquery-1.10.1.min.js">
                 </script>
@@ -114,11 +115,11 @@
 
                     }
                     function updateRow(rb) {
-                        var s = rb + "";
                         alert(rb);
+                        s = rb + "";
                         $.ajax({
                             type: "POST",
-                            url: "edit/zahtev/update",
+                            url: "edit/zahtev/update/get",
                             data: {'rb': s}
                         }
                         ).done(function () {
@@ -161,19 +162,13 @@
                                             <tr>
                                                 <th th:field="*{zahtevID}" th:text="*{zahtevID}" />  
                                                 <th th:field="*{listaStavki[__${static.index}__].redniBroj}" th:text="${pomocniZahtev.listaStavki[__${static.index}__].redniBroj}" ></th> 
-                                                <th><input th:field="*{listaStavki[__${static.index}__].kolicina}" th:value="${pomocniZahtev.listaStavki[__${static.index}__].kolicina}"/></th> 
-                                                <th th:text="kg" id="redniBr"/>  
-                                                <th>                                            
-                                                    <select th:field="*{listaStavki[__${static.index}__].materijal}">
-                                                        <option th:each="materijal : ${materijali}" 
-                                                                th:value="${materijal}" 
-                                                                th:text="#{${'materijali.materijal.' + materijal}}">
-                                                        </option> 
-                                                    </select>
-                                                </th>
+                                                <th th:field="*{listaStavki[__${static.index}__].kolicina}" th:text="${pomocniZahtev.listaStavki[__${static.index}__].kolicina}"/></th> 
+                                                <th th:text="kg" id="redniBr"/> 
+                                                <th th:field="*{listaStavki[__${static.index}__].materijal}" th:text="*{listaStavki[__${static.index}__].materijal}" />  
                                                 <div class="row" th:if="${pomocniZahtev !=null}">
                                                     <th>
-                                                        <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + ${static.index} + '\',\''  + *{zahtevID} + '\');'" th:text="#{delete}"/>
+                                                        <button class="inline-buttons" type="button"  th:onclick="'javascript:updateRow(\'' + ${static.index}  + '\');'" th:text="#{update}"/>
+                                                        <button class="inline-buttons"  type="button"  th:onclick="'javascript:deleteRow(\'' + *{listaStavki[__${static.index}__].redniBroj} + '\',\''  + *{zahtevID} + '\');'" th:text="#{delete}"/>
                                                     </th>
                                                 </div>  
                                             </tr>
@@ -182,8 +177,7 @@
                                 </table>
                             </div>
                             <div class="row" th:if="${pomocniZahtev !=null}">
-                                <button class="has-margin" th:text="#{addRow}"  type="submit"  name="action" value="addRowStavkaZah"/>
-                                <button class="has-margin" name="action" type="submit" value="update" th:text="#{update}"/>
+                                <!-- <button class="has-margin" th:text="#{addRow}"  type="submit"  name="action" value="addRowStavkaZah"/>-->
                                 <button class="has-margin" type="submit"  name="action" value="delete" th:text="#{delete-all}"/>
                             </div>  
                         </form>
@@ -230,6 +224,41 @@
                     </form>
                 </div>
             </div>
+            <!-- PRIKAZI ZAHTEV-->
+            <div class="row" th:if="${prikaziSZ !=null}">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <form action="edit/zahtev/update" th:object="${prikaziSZ}" method="post">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th th:text="#{redniBroj}"/>
+                                    <th th:text="#{kolicina}"/>
+                                    <th></th>
+                                    <th th:text="#{materijal}"/>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th th:field="*{redniBroj}" th:text="*{redniBroj}" ></th> 
+                                    <th><input th:field="*{kolicina}" th:value="*{kolicina}"/></th> 
+                                    <th th:text="kg" id="redniBr"/>  
+                                    <th>                                            
+                                        <select th:field="*{materijal}">
+                                            <option th:each="materijal : ${materijali}" 
+                                                    th:value="*{materijal}" 
+                                                    th:text="#{${'materijali.materijal.' + materijal}}">
+                                            </option> 
+                                        </select>
+                                    </th>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button th:text="#{submit}"/>
+                </div>
+            </div>
+        </div>
         </div>
     </body>
 </html>

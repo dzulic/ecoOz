@@ -38,7 +38,7 @@ import utils.Wrapper;
 @Controller
 @RequestMapping("/zapamti")
 public class CuvanjeController extends EnrolmentController {
-    
+
     @RequestMapping(path = "/zahtev", method = RequestMethod.POST, params = "action=sacuvaj")
     public String zapamtiZahtev(@ModelAttribute("zahtev") Zahtev newObject) throws CustomException {
         message = "";
@@ -51,7 +51,6 @@ public class CuvanjeController extends EnrolmentController {
         zahtev = newObject;
         if (newObject.getListaStavki() != null) {
             for (StavkaZahteva s : newObject.getListaStavki()) {
-                rb += 1;
                 s.setZahtev(newObject);
                 s.setRedniBroj(rb);
                 if (s.getKolicina() == 0) {
@@ -60,9 +59,10 @@ public class CuvanjeController extends EnrolmentController {
                 if (s.getMaterijal().equals("select")) {
                     throw new CustomException("Izaberite materijal");
                 }
-                
+
                 sum += s.getKolicina();
                 listaTransfer.add(s);
+                rb += 1;
             }
             if (listaTransfer.isEmpty()) {
                 throw new CustomException("Ne mozete da sacuvajte prazan zahtev");
@@ -70,7 +70,7 @@ public class CuvanjeController extends EnrolmentController {
             newObject.setUkupno(sum);
             ((StavkaZahteva) listaTransfer.get(0)).setZahtev(newObject);
             try {
-                
+
                 service.save(listaTransfer, Constants.STAVKA_ZAHTEVA);
                 message = "Sistem je zapamtio zahtev";
                 noviZahtev = newObject;
@@ -80,7 +80,7 @@ public class CuvanjeController extends EnrolmentController {
         }
         return "redirect:/";
     }
-    
+
     @RequestMapping(value = "/zahtev", params = "action=addRowStavkaZah")
     public String addRowZah(@ModelAttribute("zahtev") Zahtev z) {
         message = "";
@@ -94,7 +94,7 @@ public class CuvanjeController extends EnrolmentController {
         }
         return "redirect:/";
     }
-    
+
     @RequestMapping(path = "/izvestaj", method = RequestMethod.POST, params = "action=sacuvaj")
     public String zapamtiIzvestaj(@ModelAttribute("izvestaj") Izvestaj newObject) throws CustomException {
         message = "";
@@ -107,7 +107,7 @@ public class CuvanjeController extends EnrolmentController {
             for (StavkaIzvestaja s : newObject.getListaStavki()) {
                 rb += 1;
                 s.setRedniBroj(rb);
-                
+
                 if (s.getKolicina() == 0) {
                     throw new CustomException("Kolicina ne sme bii 0");
                 }
@@ -131,7 +131,7 @@ public class CuvanjeController extends EnrolmentController {
             throw new CustomException("Sistem ne moze da zapamti izvestaj");
         }
     }
-    
+
     @RequestMapping(value = "/izvestaj", params = "action=addRowIzvestaj")
     public String addRowIzv(@ModelAttribute("izvestaj") Izvestaj iz) {
         message = "";
@@ -141,12 +141,12 @@ public class CuvanjeController extends EnrolmentController {
                 izvestaj.setListaStavki(new ArrayList<>());
             }
             izvestaj.getListaStavki().add(new StavkaIzvestaja());
-            
+
             modelAndView.addObject("izvestaj", izvestaj);
         }
         return "redirect:/";
     }
-    
+
     @RequestMapping("/izvestaj/add")
     public String foo(@ModelAttribute("wrapper") Wrapper w) {
         for (Zaduzenja wZ : w.getListaZaduzenja()) {
@@ -170,7 +170,7 @@ public class CuvanjeController extends EnrolmentController {
         }
         return "redirect:/";
     }
-    
+
     public List<StavkaZahteva> getZahteve(List<LinkedHashMap> list) {
         ObjectMapper mapper = new ObjectMapper();
         List<StavkaZahteva> stavke = new ArrayList<>();

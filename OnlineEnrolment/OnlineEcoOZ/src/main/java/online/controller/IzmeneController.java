@@ -10,6 +10,7 @@ import domen.StavkaZahteva;
 import domen.Zahtev;
 import exceptions.CustomException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static online.controller.EnrolmentController.message;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,27 @@ public class IzmeneController extends EnrolmentController {
 
     }
 
+    @RequestMapping(value = "/zahtev/update/get", method = RequestMethod.POST)
+    public String fetchStavkuZahteva(String rb) throws CustomException {
+        StavkaZahteva stavkaZahteva = pomocneStavkeZah.get(Integer.parseInt(rb));
+        prikaziSZ = stavkaZahteva;
+        return "redirect:/";
+
+    }
+
+    @RequestMapping(value = "/zahtev/update", method = RequestMethod.POST)
+    public String izmeniStavkuZahteva(@ModelAttribute("prikaziSZ") StavkaZahteva sz) throws CustomException {
+        try {
+            service.update((new ArrayList<OpstiDomenskiObjekat>(Arrays.asList(sz))), Constants.STAVKA_ZAHTEVA);
+            message = "Sistem je izmenio zahtev";
+            zaduzenjeSve = null;
+            return "redirect:/";
+        } catch (Exception e) {
+            throw new CustomException("Sistem ne moze da izmeni zahtev");
+        }
+
+    }
+
     @RequestMapping(value = "/zahtev", method = RequestMethod.POST, params = "action=update")
     public String izmeniZahtev(@ModelAttribute("pomocniZahtev") Zahtev z) throws CustomException {
         message = "";
@@ -69,7 +91,6 @@ public class IzmeneController extends EnrolmentController {
         for (StavkaZahteva stavkaZahteva : z.getListaStavki()) {
             Zahtev zah = new Zahtev(z.getZahtevID(), z.getDatum(), z.getKorisnik(), z.getUkupno());
             stavkaZahteva.setZahtev(zah);
-            stavkaZahteva.setRedniBroj(i);
             lista.add(stavkaZahteva);
             i += stavkaZahteva.getKolicina();
         }
@@ -93,7 +114,7 @@ public class IzmeneController extends EnrolmentController {
                 pomocniZahtev.setListaStavki(new ArrayList<>());
             }
             StavkaZahteva sz = new StavkaZahteva();
-            sz.setRedniBroj(pomocniZahtev.getListaStavki().get(pomocniZahtev.getListaStavki().size()-1).getRedniBroj() + 1);
+            sz.setRedniBroj(pomocniZahtev.getListaStavki().get(pomocniZahtev.getListaStavki().size() - 1).getRedniBroj() + 1);
             pomocniZahtev.getListaStavki().add(sz);
             modelAndView.addObject("pomocniZahtev", pomocniZahtev);
         }

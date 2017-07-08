@@ -114,12 +114,12 @@ public class Service extends AbstractService {
                 operacija = new NadjiSluzbu((SluzbaTransporta) odo);
                 break;
             }
-            case(Constants.ZADUZENJE):{
-             operacija= new PrikaziZaduzenje((Zaduzenja) odo);
-             break;
+            case (Constants.ZADUZENJE): {
+                operacija = new PrikaziZaduzenje((Zaduzenja) odo);
+                break;
             }
-            case (Constants.IZVESTAJ):{
-                operacija= new PrikaziIzvestaj((Izvestaj)odo);
+            case (Constants.IZVESTAJ): {
+                operacija = new PrikaziIzvestaj((Izvestaj) odo);
                 break;
             }
         }
@@ -147,14 +147,18 @@ public class Service extends AbstractService {
 
     @Override
     public TransferObjekat delete(OpstiDomenskiObjekat odo) {
-        SOAbstract operacija = new ObrisiZahtev(odo);
+        SOAbstract operacija = new ObrisiZahtev(odo, "obrisi");
+        db.dataBaseOperation(operacija);
+        operacija = new ObrisiZahtev(odo, "sredi");
         db.dataBaseOperation(operacija);
         return new TransferObjekat(null, operacija.getHttpStatus());
     }
 
     @Override
     public TransferObjekat update(List<OpstiDomenskiObjekat> obj) {
-        SOAbstract operacija = new IzmeniZahtev(obj);
+        SOAbstract operacija = new IzmeniZahtev(obj, Constants.STAVKA_ZAHTEVA);
+        db.dataBaseOperation(operacija);
+        operacija = new IzmeniZahtev(obj, Constants.ZAHTEV);
         db.dataBaseOperation(operacija);
         return new TransferObjekat(operacija.getObjekat(), operacija.getHttpStatus());
     }

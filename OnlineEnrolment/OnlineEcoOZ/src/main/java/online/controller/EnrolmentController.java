@@ -68,6 +68,7 @@ public class EnrolmentController {
     public static List<StavkaZahteva> stavkeZah;
     public static List<StavkaZahteva> pomocneStavkeZah;
     public static Wrapper wrapper;
+    public static StavkaZahteva prikaziSZ;
 
     public List<Izvestaj> listaIzvestaja;
 
@@ -236,6 +237,11 @@ public class EnrolmentController {
     @ModelAttribute("pomocniZahtev")
     public Zahtev returnNadjenZahtev() {
         return pomocniZahtev;
+    }
+
+    @ModelAttribute("prikaziSZ")
+    public StavkaZahteva returnStavkaZahtev() {
+        return prikaziSZ;
     }
 
     @RequestMapping({"/"})
